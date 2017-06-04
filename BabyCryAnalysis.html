@@ -183,13 +183,32 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Step-1:--Grab-the-audio-file-and-its-label">Step 1:  Grab the audio file and its label<a class="anchor-link" href="#Step-1:--Grab-the-audio-file-and-its-label">&#182;</a></h2>
+<h2 id="Part-1:-Let's-train-a-machine-learning-algorithm-and-test-it's-performance">Part 1: Let's train a machine learning algorithm and test it's performance<a class="anchor-link" href="#Part-1:-Let's-train-a-machine-learning-algorithm-and-test-it's-performance">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We will begin by collecting all of the sample audio files we have, chopping them into smaller audio snippets and training a collection of machine learning algorithms with part of this data.  With another part of the data we will test and see how well the algorithms predict data they have never seen before and then choose the best algorithm for our project</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Step-1:--Grab-the-audio-file-and-its-label-(we-have-3-labels:-hungry,-pain,-and-asphyxia)">Step 1:  Grab the audio file and its label (we have 3 labels: hungry, pain, and asphyxia)<a class="anchor-link" href="#Step-1:--Grab-the-audio-file-and-its-label-(we-have-3-labels:-hungry,-pain,-and-asphyxia)">&#182;</a></h3>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="c">#Store all audio files in dictionary where key: filename, value: label</span>
@@ -242,13 +261,13 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Step-2:--Chop-the-audio-file-into-1-sec.-snippets-and-save-them-in-separate-folders">Step 2:  Chop the audio file into 1 sec. snippets and save them in separate folders<a class="anchor-link" href="#Step-2:--Chop-the-audio-file-into-1-sec.-snippets-and-save-them-in-separate-folders">&#182;</a></h2>
+<h2 id="Step-2:--Chop-the-audio-file-into-1-sec.-snippets-and-save-them-in-corresponding-folders">Step 2:  Chop the audio file into 1 sec. snippets and save them in corresponding folders<a class="anchor-link" href="#Step-2:--Chop-the-audio-file-into-1-sec.-snippets-and-save-them-in-corresponding-folders">&#182;</a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="kn">import</span> <span class="nn">wave</span> 
@@ -260,20 +279,34 @@ div#notebook {
     <span class="n">n_frames</span> <span class="o">=</span> <span class="n">handle</span><span class="o">.</span><span class="n">getnframes</span><span class="p">()</span>
     <span class="n">window_size</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">frame_rate</span>
     <span class="n">num_secs</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">n_frames</span><span class="o">/</span><span class="n">frame_rate</span><span class="p">))</span>
-
-
+    <span class="c">#print filename</span>
+    <span class="n">last_number_frames</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="c">#Slicing Audio file</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">num_secs</span><span class="p">):</span>
-        <span class="n">filename</span> <span class="o">=</span> <span class="s">&#39;audio/&#39;</span> <span class="o">+</span> <span class="n">folder</span> <span class="o">+</span> <span class="s">&#39;/snippet&#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;.wav&#39;</span>
-        <span class="n">snippet</span> <span class="o">=</span> <span class="n">wave</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span> <span class="p">,</span><span class="s">&#39;wb&#39;</span><span class="p">)</span>
+        
+        <span class="n">shortfilename</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">snippetfilename</span> <span class="o">=</span> <span class="s">&#39;audio/&#39;</span> <span class="o">+</span> <span class="n">folder</span> <span class="o">+</span> <span class="s">&#39;/&#39;</span> <span class="o">+</span> <span class="n">shortfilename</span> <span class="o">+</span> <span class="s">&#39;snippet&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;.wav&#39;</span>
+        <span class="c">#print snippetfilename</span>
+        <span class="n">snippet</span> <span class="o">=</span> <span class="n">wave</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">snippetfilename</span> <span class="p">,</span><span class="s">&#39;wb&#39;</span><span class="p">)</span>
         <span class="n">snippet</span><span class="o">.</span><span class="n">setnchannels</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
         <span class="n">snippet</span><span class="o">.</span><span class="n">setsampwidth</span><span class="p">(</span><span class="n">handle</span><span class="o">.</span><span class="n">getsampwidth</span><span class="p">())</span>
         <span class="n">snippet</span><span class="o">.</span><span class="n">setframerate</span><span class="p">(</span><span class="n">frame_rate</span><span class="p">)</span>
+        <span class="c">#snippet.setsampwidth(2)</span>
+        <span class="c">#snippet.setframerate(11025)</span>
+        <span class="n">snippet</span><span class="o">.</span><span class="n">setnframes</span><span class="p">(</span><span class="n">handle</span><span class="o">.</span><span class="n">getnframes</span><span class="p">())</span>
         <span class="n">snippet</span><span class="o">.</span><span class="n">writeframes</span><span class="p">(</span><span class="n">handle</span><span class="o">.</span><span class="n">readframes</span><span class="p">(</span><span class="n">window_size</span><span class="p">))</span>
         <span class="n">handle</span><span class="o">.</span><span class="n">setpos</span><span class="p">(</span><span class="n">handle</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">frame_rate</span><span class="p">)</span>
+        <span class="c">#print snippetfilename, &quot;:&quot;, snippet.getnchannels(), snippet.getframerate(), snippet.getnframes(), snippet.getsampwidth()</span>
+        
+        <span class="c">#The last audio slice might be less than a second, if this is the case, we don&#39;t want to include it because it will not fit into our matrix </span>
+        <span class="k">if</span> <span class="n">last_number_frames</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">last_number_frames</span> <span class="o">=</span> <span class="n">snippet</span><span class="o">.</span><span class="n">getnframes</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">snippet</span><span class="o">.</span><span class="n">getnframes</span><span class="p">()</span> <span class="o">!=</span> <span class="n">last_number_frames</span><span class="p">:</span>
+            <span class="c">#print &quot;this file doesnt have the same frame size!, remaming file&quot;</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">snippetfilename</span><span class="p">,</span> <span class="n">snippetfilename</span><span class="o">+</span><span class="s">&quot;.bak&quot;</span><span class="p">)</span>
         <span class="n">snippet</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-    <span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="c">#handle.close()</span>
 
 <span class="k">for</span> <span class="n">audio_file</span> <span class="ow">in</span> <span class="n">raw_audio</span><span class="p">:</span>
     <span class="n">chop_song</span><span class="p">(</span><span class="n">audio_file</span><span class="p">,</span> <span class="n">raw_audio</span><span class="p">[</span><span class="n">audio_file</span><span class="p">])</span>
@@ -283,96 +316,19 @@ div#notebook {
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>(&apos;chopping: Full_pain/17.wav&apos;, &apos;pain&apos;)
-(&apos;chopping: Full_pain/24.wav&apos;, &apos;pain&apos;)
-(&apos;chopping: Full_hunger/39.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_hunger/51.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_pain/22.wav&apos;, &apos;pain&apos;)
-(&apos;chopping: Full_hunger/42.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_pain/7.wav&apos;, &apos;pain&apos;)
-(&apos;chopping: Full_asphyxia/63.wav&apos;, &apos;asphyxia&apos;)
-(&apos;chopping: Full_pain/72.wav&apos;, &apos;pain&apos;)
-(&apos;chopping: Full_pain/10a.wav&apos;, &apos;pain&apos;)
-(&apos;chopping: Full_hunger/47.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_pain/10.wav&apos;, &apos;pain&apos;)
-(&apos;chopping: Full_pain/73.wav&apos;, &apos;pain&apos;)
-(&apos;chopping: Full_hunger/37.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_hunger/83.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_hunger/4.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_asphyxia/64.wav&apos;, &apos;asphyxia&apos;)
-(&apos;chopping: Full_asphyxia/67.wav&apos;, &apos;asphyxia&apos;)
-(&apos;chopping: Full_pain/13.wav&apos;, &apos;pain&apos;)
-(&apos;chopping: Full_hunger/80.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_hunger/18.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_hunger/88a.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_hunger/36.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_hunger/5.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_hunger/43.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_hunger/23.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_pain/14.wav&apos;, &apos;pain&apos;)
-(&apos;chopping: Full_hunger/35.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_hunger/75.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_pain/50.wav&apos;, &apos;pain&apos;)
-(&apos;chopping: Full_pain/20.wav&apos;, &apos;pain&apos;)
-(&apos;chopping: Full_hunger/44.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_pain/6.wav&apos;, &apos;pain&apos;)
-(&apos;chopping: Full_pain/19.wav&apos;, &apos;pain&apos;)
-(&apos;chopping: Full_hunger/48.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_pain/2.wav&apos;, &apos;pain&apos;)
-(&apos;chopping: Full_hunger/34.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_hunger/33.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_asphyxia/66.wav&apos;, &apos;asphyxia&apos;)
-(&apos;chopping: Full_pain/3.wav&apos;, &apos;pain&apos;)
-(&apos;chopping: Full_hunger/77.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_pain/9b.wav&apos;, &apos;pain&apos;)
-(&apos;chopping: Full_pain/15.wav&apos;, &apos;pain&apos;)
-(&apos;chopping: Full_pain/74.wav&apos;, &apos;pain&apos;)
-(&apos;chopping: Full_pain/1.wav&apos;, &apos;pain&apos;)
-(&apos;chopping: Full_pain/49.wav&apos;, &apos;pain&apos;)
-(&apos;chopping: Full_hunger/41.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_hunger/16.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_hunger/11.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_hunger/46.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_hunger/38.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_hunger/79.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_asphyxia/68.wav&apos;, &apos;asphyxia&apos;)
-(&apos;chopping: Full_hunger/21.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_hunger/12.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_pain/45.wav&apos;, &apos;pain&apos;)
-(&apos;chopping: Full_hunger/76.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_hunger/81.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_hunger/40.wav&apos;, &apos;hungry&apos;)
-(&apos;chopping: Full_pain/32.wav&apos;, &apos;pain&apos;)
-(&apos;chopping: Full_pain/8.wav&apos;, &apos;pain&apos;)
-(&apos;chopping: Full_pain/9a.wav&apos;, &apos;pain&apos;)
-(&apos;chopping: Full_asphyxia/65.wav&apos;, &apos;asphyxia&apos;)
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Step-3:--Transform-.wav-to-frequency-spectrum">Step 3:  Transform .wav to frequency spectrum<a class="anchor-link" href="#Step-3:--Transform-.wav-to-frequency-spectrum">&#182;</a></h2><p>Some files had some sample rate issues and caused errors in this step. If this happens, print out the file name at each pass and if one of the files is causing an error, go ahead and delete it for now</p>
-
+<h2 id="Step-3:--Transform-.wav-files-to-frequency-spectrum-&quot;fingerprints&quot;-using-MFCC-algorithm">Step 3:  Transform .wav files to frequency spectrum "fingerprints" using MFCC algorithm<a class="anchor-link" href="#Step-3:--Transform-.wav-files-to-frequency-spectrum-&quot;fingerprints&quot;-using-MFCC-algorithm">&#182;</a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[158]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
@@ -383,7 +339,9 @@ div#notebook {
 <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">filename</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s">&#39;audio/pain/&#39;</span><span class="p">)):</span>
+    <span class="n">last_number_frames</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
     <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&quot;.wav&quot;</span><span class="p">):</span>
+        <span class="c">#print filename</span>
         <span class="n">audiofile</span><span class="p">,</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&quot;audio/pain/&quot;</span> <span class="o">+</span> <span class="n">filename</span><span class="p">)</span>
         <span class="n">fingerprint</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">mfcc</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">audiofile</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">,</span> <span class="n">n_mfcc</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">fingerprint</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="s">&#39;float32&#39;</span><span class="p">)</span>
@@ -394,6 +352,7 @@ div#notebook {
 
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">filename</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s">&#39;audio/hungry/&#39;</span><span class="p">)):</span>
     <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&quot;.wav&quot;</span><span class="p">):</span>
+        <span class="c">#print filename</span>
         <span class="n">audiofile</span><span class="p">,</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&quot;audio/hungry/&quot;</span> <span class="o">+</span> <span class="n">filename</span><span class="p">)</span>
         <span class="n">fingerprint</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">mfcc</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">audiofile</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">,</span> <span class="n">n_mfcc</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">fingerprint</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="s">&#39;float32&#39;</span><span class="p">)</span>
@@ -410,11 +369,191 @@ div#notebook {
         <span class="n">x</span><span class="p">[</span><span class="mi">44</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;asphyxia&#39;</span>
         <span class="n">X</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">j</span><span class="o">+</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         
-<span class="c">#Do something with missing values</span>
+<span class="c">#Do something with missing values. you might want to do something more sophisticated with missing values later</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">X</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[16]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+      <th>7</th>
+      <th>8</th>
+      <th>9</th>
+      <th>...</th>
+      <th>34</th>
+      <th>35</th>
+      <th>36</th>
+      <th>37</th>
+      <th>38</th>
+      <th>39</th>
+      <th>40</th>
+      <th>41</th>
+      <th>42</th>
+      <th>43</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>61.164639</td>
+      <td>47.077801</td>
+      <td>-31.072571</td>
+      <td>-96.637245</td>
+      <td>-130.160461</td>
+      <td>-123.079628</td>
+      <td>-122.755928</td>
+      <td>-106.404770</td>
+      <td>-89.965424</td>
+      <td>-90.127457</td>
+      <td>...</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>88.442520</td>
+      <td>76.313026</td>
+      <td>-2.145989</td>
+      <td>-30.406242</td>
+      <td>-61.038811</td>
+      <td>-67.060280</td>
+      <td>-54.365772</td>
+      <td>-55.774155</td>
+      <td>-47.985542</td>
+      <td>-15.517380</td>
+      <td>...</td>
+      <td>-86.546463</td>
+      <td>-30.136751</td>
+      <td>-7.350064</td>
+      <td>-10.286840</td>
+      <td>-12.592611</td>
+      <td>-13.583686</td>
+      <td>-21.501377</td>
+      <td>-11.565689</td>
+      <td>62.324951</td>
+      <td>69.309616</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>-29.781023</td>
+      <td>-60.232071</td>
+      <td>-96.828278</td>
+      <td>-90.998222</td>
+      <td>-94.779671</td>
+      <td>-105.075417</td>
+      <td>-97.519058</td>
+      <td>-99.080528</td>
+      <td>-105.163040</td>
+      <td>-106.028229</td>
+      <td>...</td>
+      <td>-90.644783</td>
+      <td>-83.937691</td>
+      <td>-80.022545</td>
+      <td>-91.994202</td>
+      <td>-102.968040</td>
+      <td>-90.376099</td>
+      <td>-89.551079</td>
+      <td>-84.076927</td>
+      <td>-11.199362</td>
+      <td>3.811244</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>-48.579533</td>
+      <td>-68.671791</td>
+      <td>-113.557213</td>
+      <td>-111.534363</td>
+      <td>-108.681320</td>
+      <td>-106.165474</td>
+      <td>-101.677551</td>
+      <td>-95.523392</td>
+      <td>-102.661011</td>
+      <td>-105.140739</td>
+      <td>...</td>
+      <td>-80.398064</td>
+      <td>-92.367661</td>
+      <td>-95.758377</td>
+      <td>-104.873161</td>
+      <td>-106.258102</td>
+      <td>-109.926643</td>
+      <td>-111.612045</td>
+      <td>-98.675140</td>
+      <td>-91.144066</td>
+      <td>-95.634537</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>10.824058</td>
+      <td>13.150772</td>
+      <td>-6.948591</td>
+      <td>-17.075489</td>
+      <td>-12.422709</td>
+      <td>-0.860229</td>
+      <td>3.998694</td>
+      <td>3.655787</td>
+      <td>-2.229299</td>
+      <td>-17.267118</td>
+      <td>...</td>
+      <td>-9.970703</td>
+      <td>-41.767918</td>
+      <td>-99.628151</td>
+      <td>-110.191643</td>
+      <td>-78.499588</td>
+      <td>-62.011497</td>
+      <td>-63.363140</td>
+      <td>-67.923515</td>
+      <td>-67.200996</td>
+      <td>-55.079521</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 44 columns</p>
+</div>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -430,7 +569,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[160]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="kn">from</span> <span class="nn">sklearn.cross_validation</span> <span class="kn">import</span> <span class="n">train_test_split</span>
@@ -458,7 +597,62 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[164]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="c">#Code to hide deprication warnings</span>
+
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+<span class="n">HTML</span><span class="p">(</span><span class="s">&#39;&#39;&#39;&lt;script&gt;</span>
+<span class="s">code_show_err=false; </span>
+<span class="s">function code_toggle_err() {</span>
+<span class="s"> if (code_show_err){</span>
+<span class="s"> $(&#39;div.output_stderr&#39;).hide();</span>
+<span class="s"> } else {</span>
+<span class="s"> $(&#39;div.output_stderr&#39;).show();</span>
+<span class="s"> }</span>
+<span class="s"> code_show_err = !code_show_err</span>
+<span class="s">} </span>
+<span class="s">$( document ).ready(code_toggle_err);</span>
+<span class="s">&lt;/script&gt;</span>
+<span class="s">To toggle on/off output_stderr, click &lt;a href=&quot;javascript:code_toggle_err()&quot;&gt;here&lt;/a&gt;.&#39;&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[7]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<script>
+code_show_err=false; 
+function code_toggle_err() {
+ if (code_show_err){
+ $('div.output_stderr').hide();
+ } else {
+ $('div.output_stderr').show();
+ }
+ code_show_err = !code_show_err
+} 
+$( document ).ready(code_toggle_err);
+</script>
+To toggle on/off output_stderr, click <a href="javascript:code_toggle_err()">here</a>.
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
@@ -496,12 +690,8 @@ div#notebook {
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>     Model, Accuracy, Precision, Recall
-    Random Forest: (0.967741935483871, 0.97235023041474655, 0.967741935483871)
-    Logistic Regression: (0.83870967741935487, 0.83136200716845876, 0.83870967741935487)
-    Decision Tree: (1.0, 1.0, 1.0)
-    SVM: (0.5161290322580645, 0.26638917793964617, 0.5161290322580645)
-</pre>
+<pre>    Model, Accuracy, Precision, Recall
+    Random Forest: </pre>
 </div>
 </div>
 
@@ -513,7 +703,20 @@ div#notebook {
   sample_weight=sample_weight)
 //anaconda/lib/python2.7/site-packages/sklearn/metrics/classification.py:1203: DeprecationWarning: The default &#96;weighted&#96; averaging is deprecated, and from version 0.18, use of precision, recall or F-score with multiclass or multilabel data or pos_label=None will result in an exception. Please set an explicit value for &#96;average&#96;, one of (None, &apos;micro&apos;, &apos;macro&apos;, &apos;weighted&apos;, &apos;samples&apos;). In cross validation use, for instance, scoring=&quot;f1_weighted&quot; instead of scoring=&quot;f1&quot;.
   sample_weight=sample_weight)
-//anaconda/lib/python2.7/site-packages/sklearn/metrics/classification.py:1304: DeprecationWarning: The default &#96;weighted&#96; averaging is deprecated, and from version 0.18, use of precision, recall or F-score with multiclass or multilabel data or pos_label=None will result in an exception. Please set an explicit value for &#96;average&#96;, one of (None, &apos;micro&apos;, &apos;macro&apos;, &apos;weighted&apos;, &apos;samples&apos;). In cross validation use, for instance, scoring=&quot;f1_weighted&quot; instead of scoring=&quot;f1&quot;.
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>(0.80693069306930698, 0.80875431729219438, 0.80693069306930698)
+    Logistic Regression: </pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>//anaconda/lib/python2.7/site-packages/sklearn/metrics/classification.py:1304: DeprecationWarning: The default &#96;weighted&#96; averaging is deprecated, and from version 0.18, use of precision, recall or F-score with multiclass or multilabel data or pos_label=None will result in an exception. Please set an explicit value for &#96;average&#96;, one of (None, &apos;micro&apos;, &apos;macro&apos;, &apos;weighted&apos;, &apos;samples&apos;). In cross validation use, for instance, scoring=&quot;f1_weighted&quot; instead of scoring=&quot;f1&quot;.
   sample_weight=sample_weight)
 //anaconda/lib/python2.7/site-packages/sklearn/metrics/classification.py:1203: DeprecationWarning: The default &#96;weighted&#96; averaging is deprecated, and from version 0.18, use of precision, recall or F-score with multiclass or multilabel data or pos_label=None will result in an exception. Please set an explicit value for &#96;average&#96;, one of (None, &apos;micro&apos;, &apos;macro&apos;, &apos;weighted&apos;, &apos;samples&apos;). In cross validation use, for instance, scoring=&quot;f1_weighted&quot; instead of scoring=&quot;f1&quot;.
   sample_weight=sample_weight)
@@ -521,6 +724,23 @@ div#notebook {
   sample_weight=sample_weight)
 //anaconda/lib/python2.7/site-packages/sklearn/metrics/classification.py:1203: DeprecationWarning: The default &#96;weighted&#96; averaging is deprecated, and from version 0.18, use of precision, recall or F-score with multiclass or multilabel data or pos_label=None will result in an exception. Please set an explicit value for &#96;average&#96;, one of (None, &apos;micro&apos;, &apos;macro&apos;, &apos;weighted&apos;, &apos;samples&apos;). In cross validation use, for instance, scoring=&quot;f1_weighted&quot; instead of scoring=&quot;f1&quot;.
   sample_weight=sample_weight)
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>(0.70792079207920788, 0.72826645954770641, 0.70792079207920788)
+    Decision Tree: (0.7722772277227723, 0.77233616218764733, 0.7722772277227723)
+    SVM: (0.41584158415841582, 0.17292422311538083, 0.41584158415841582)
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>//anaconda/lib/python2.7/site-packages/sklearn/metrics/classification.py:1074: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples.
+  &apos;precision&apos;, &apos;predicted&apos;, average, warn_for)
 //anaconda/lib/python2.7/site-packages/sklearn/metrics/classification.py:1304: DeprecationWarning: The default &#96;weighted&#96; averaging is deprecated, and from version 0.18, use of precision, recall or F-score with multiclass or multilabel data or pos_label=None will result in an exception. Please set an explicit value for &#96;average&#96;, one of (None, &apos;micro&apos;, &apos;macro&apos;, &apos;weighted&apos;, &apos;samples&apos;). In cross validation use, for instance, scoring=&quot;f1_weighted&quot; instead of scoring=&quot;f1&quot;.
   sample_weight=sample_weight)
 </pre>
@@ -536,11 +756,8 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Results-Model:-(Accuracy,-Precision,-Recall)">Results Model: (Accuracy, Precision, Recall)<a class="anchor-link" href="#Results-Model:-(Accuracy,-Precision,-Recall)">&#182;</a></h2>
-<pre><code>Random Forest: (0.967741935483871, 0.97235023041474655, 0.967741935483871)
-Logistic Regression: (0.83870967741935487, 0.83136200716845876, 0.83870967741935487)
-Decision Tree: (1.0, 1.0, 1.0)
-SVM: (0.5161290322580645, 0.26638917793964617, 0.5161290322580645)</code></pre>
+<h2 id="Results-Model:-(Accuracy,-Precision,-Recall)">Results Model: (Accuracy, Precision, Recall)<a class="anchor-link" href="#Results-Model:-(Accuracy,-Precision,-Recall)">&#182;</a></h2><p>We tested four popular machine learning algorithms to see which ones had the most accuracte predictions with our test data, here are the results:</p>
+<h4 id="Random-Forest:-~80%-Accuracy">Random Forest: ~80% Accuracy<a class="anchor-link" href="#Random-Forest:-~80%-Accuracy">&#182;</a></h4><h4 id="Logistic-Regression:-~70%-Accuracy">Logistic Regression: ~70% Accuracy<a class="anchor-link" href="#Logistic-Regression:-~70%-Accuracy">&#182;</a></h4><h4 id="Decision-Tree:-~77%-Accuracy">Decision Tree: ~77% Accuracy<a class="anchor-link" href="#Decision-Tree:-~77%-Accuracy">&#182;</a></h4><h4 id="Support-Vector-Machines:-~47%-Accuracy">Support Vector Machines: ~47% Accuracy<a class="anchor-link" href="#Support-Vector-Machines:-~47%-Accuracy">&#182;</a></h4><p>I am glossing over a lot of details here.  Different algorithms have different performance speeds and settings that we can tweak to improve their accuracy, precision, and recall.  Random Forests usually perform best with little tweaking although they aren't the fastest in most cases. For this experiment however, I think random forests are fine for building the basic version of our application</p>
 
 </div>
 </div>
@@ -550,19 +767,24 @@ SVM: (0.5161290322580645, 0.26638917793964617, 0.5161290322580645)</code></pre>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="After-you-are-satisfied-with-the-results-of-your-model,-you-can-save-the-model-into-a-.pkl-file-that-you-can-quickly-use-to-make-predictions-of-new-data">After you are satisfied with the results of your model, you can save the model into a .pkl file that you can quickly use to make predictions of new data<a class="anchor-link" href="#After-you-are-satisfied-with-the-results-of-your-model,-you-can-save-the-model-into-a-.pkl-file-that-you-can-quickly-use-to-make-predictions-of-new-data">&#182;</a></h2>
+<h2 id="After-you-are-satisfied-with-the-results-of-your-model,-you-can-save-the-model-into-a-.pkl-file-that-you-can-quickly-use-to-make-predictions-of-new-data.--I-will-fit-a-new-random-forest-model-that-uses-all-of-the-data-I-have-and-save-it-as-'myRandomForest.pkl'">After you are satisfied with the results of your model, you can save the model into a .pkl file that you can quickly use to make predictions of new data.  I will fit a new random forest model that uses all of the data I have and save it as 'myRandomForest.pkl'<a class="anchor-link" href="#After-you-are-satisfied-with-the-results-of-your-model,-you-can-save-the-model-into-a-.pkl-file-that-you-can-quickly-use-to-make-predictions-of-new-data.--I-will-fit-a-new-random-forest-model-that-uses-all-of-the-data-I-have-and-save-it-as-'myRandomForest.pkl'">&#182;</a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="k">def</span> <span class="nf">pickle_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">modelname</span><span class="p">):</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;../models/&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">modelname</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;.pkl&#39;</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<div class=" highlight hl-ipython2"><pre><span class="kn">import</span> <span class="nn">cPickle</span>
+
+<span class="k">def</span> <span class="nf">pickle_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">modelname</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;models/&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">modelname</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;.pkl&#39;</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">cPickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
-    
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">pickle_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s">&quot;myRandomForest&quot;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -581,7 +803,7 @@ SVM: (0.5161290322580645, 0.26638917793964617, 0.5161290322580645)</code></pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="k">def</span> <span class="nf">getModel</span><span class="p">(</span><span class="n">pickle_path</span><span class="p">):</span>
@@ -599,7 +821,8 @@ SVM: (0.5161290322580645, 0.26638917793964617, 0.5161290322580645)</code></pre>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Making-Actual-Predictions-on-new-sounds">Making Actual Predictions on new sounds<a class="anchor-link" href="#Making-Actual-Predictions-on-new-sounds">&#182;</a></h1>
+<h1 id="Part-2">Part 2<a class="anchor-link" href="#Part-2">&#182;</a></h1><h2 id="Let's-see-if-it-works!-Making-Actual-Predictions-on-new-sounds">Let's see if it works! Making Actual Predictions on new sounds<a class="anchor-link" href="#Let's-see-if-it-works!-Making-Actual-Predictions-on-new-sounds">&#182;</a></h2><p>I downloaded from YouTube an audio file of a hungry baby crying. (<a href="https://www.youtube.com/watch?v=n87mdkR4kIY">https://www.youtube.com/watch?v=n87mdkR4kIY</a>) I know our dataset probably isn't big enough to make a strong prediction but let's see if we can get an algorithm working that makes a prediction.</p>
+
 </div>
 </div>
 </div>
@@ -608,8 +831,7 @@ SVM: (0.5161290322580645, 0.26638917793964617, 0.5161290322580645)</code></pre>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>You can decide how you want to set up your system to receive and process the audio files it receives. I chose to use concurrent queues in order to make multiple predictions and take the most common result of multiple 1-second slices of audio input.  You may choose to do something else, but as of right now, your algorithm makes a prediction based upon just one second of sound.  Here is some code that I used to make predictions after the audio was already chopped, MFCC transformed into an audio "fingerprint" , and placed in a queue.</p>
-
+<h2 id="Step-1:-Load-the-model-from-disk-into-Python">Step 1: Load the model from disk into Python<a class="anchor-link" href="#Step-1:-Load-the-model-from-disk-into-Python">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -618,20 +840,7 @@ SVM: (0.5161290322580645, 0.26638917793964617, 0.5161290322580645)</code></pre>
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">fingerprint_queue</span><span class="p">,</span><span class="n">prediction_queue</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">fingerprint_queue</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
-            <span class="k">print</span> <span class="s">&quot;Predictor Worker waking up...</span><span class="se">\n</span><span class="s">&quot;</span>
-            <span class="n">fingerprint</span> <span class="o">=</span> <span class="n">fingerprint_queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-
-            <span class="n">X</span> <span class="o">=</span> <span class="n">fingerprint</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-            <span class="n">prediction</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-            <span class="k">print</span> <span class="s">&quot;PREDICTION: &quot;</span><span class="p">,</span> <span class="n">prediction</span>
-            <span class="n">prediction_queue</span><span class="o">.</span><span class="n">put</span><span class="p">([</span><span class="n">prediction</span><span class="p">,</span> <span class="n">fingerprint</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
-
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c">#print &quot;Predictor worker waiting....\n&quot;</span>
-            <span class="n">sleep</span><span class="p">(</span><span class="o">.</span><span class="mi">2</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span class="n">model</span> <span class="o">=</span> <span class="n">getModel</span><span class="p">(</span><span class="s">&quot;models/myRandomForest.pkl&quot;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -644,7 +853,138 @@ SVM: (0.5161290322580645, 0.26638917793964617, 0.5161290322580645)</code></pre>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>I hope this is useful!  Let me know if you have any other questions or concerns and I will be more than happy to help!</p>
+<h2 id="Step-2:--Chop-the-wav-file-and-store-it-in-a-folder">Step 2:  Chop the wav file and store it in a folder<a class="anchor-link" href="#Step-2:--Chop-the-wav-file-and-store-it-in-a-folder">&#182;</a></h2><p>I should have done a better job making the old chop_songs method more reusable, oh well.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="k">def</span> <span class="nf">chop_new_audio</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">folder</span><span class="p">):</span>
+    <span class="n">handle</span> <span class="o">=</span> <span class="n">wave</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span>
+    <span class="n">frame_rate</span> <span class="o">=</span> <span class="n">handle</span><span class="o">.</span><span class="n">getframerate</span><span class="p">()</span>
+    <span class="n">n_frames</span> <span class="o">=</span> <span class="n">handle</span><span class="o">.</span><span class="n">getnframes</span><span class="p">()</span>
+    <span class="n">window_size</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">frame_rate</span>
+    <span class="n">num_secs</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">n_frames</span><span class="o">/</span><span class="n">frame_rate</span><span class="p">))</span>
+    <span class="c">#print filename</span>
+    <span class="n">last_number_frames</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c">#Slicing Audio file</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">num_secs</span><span class="p">):</span>
+        
+        <span class="n">shortfilename</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">snippetfilename</span> <span class="o">=</span> <span class="n">folder</span> <span class="o">+</span> <span class="s">&#39;/&#39;</span> <span class="o">+</span> <span class="n">shortfilename</span> <span class="o">+</span> <span class="s">&#39;snippet&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;.wav&#39;</span>
+        <span class="c">#print snippetfilename</span>
+        <span class="n">snippet</span> <span class="o">=</span> <span class="n">wave</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">snippetfilename</span> <span class="p">,</span><span class="s">&#39;wb&#39;</span><span class="p">)</span>
+        <span class="n">snippet</span><span class="o">.</span><span class="n">setnchannels</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">snippet</span><span class="o">.</span><span class="n">setsampwidth</span><span class="p">(</span><span class="n">handle</span><span class="o">.</span><span class="n">getsampwidth</span><span class="p">())</span>
+        <span class="n">snippet</span><span class="o">.</span><span class="n">setframerate</span><span class="p">(</span><span class="n">frame_rate</span><span class="p">)</span>
+        <span class="c">#snippet.setsampwidth(2)</span>
+        <span class="c">#snippet.setframerate(11025)</span>
+        <span class="n">snippet</span><span class="o">.</span><span class="n">setnframes</span><span class="p">(</span><span class="n">handle</span><span class="o">.</span><span class="n">getnframes</span><span class="p">())</span>
+        <span class="n">snippet</span><span class="o">.</span><span class="n">writeframes</span><span class="p">(</span><span class="n">handle</span><span class="o">.</span><span class="n">readframes</span><span class="p">(</span><span class="n">window_size</span><span class="p">))</span>
+        <span class="n">handle</span><span class="o">.</span><span class="n">setpos</span><span class="p">(</span><span class="n">handle</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">frame_rate</span><span class="p">)</span>
+        <span class="c">#print snippetfilename, &quot;:&quot;, snippet.getnchannels(), snippet.getframerate(), snippet.getnframes(), snippet.getsampwidth()</span>
+        
+        <span class="c">#The last audio slice might be less than a second, if this is the case, we don&#39;t want to include it because it will not fit into our matrix </span>
+        <span class="k">if</span> <span class="n">last_number_frames</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">last_number_frames</span> <span class="o">=</span> <span class="n">snippet</span><span class="o">.</span><span class="n">getnframes</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">snippet</span><span class="o">.</span><span class="n">getnframes</span><span class="p">()</span> <span class="o">!=</span> <span class="n">last_number_frames</span><span class="p">:</span>
+            <span class="c">#print &quot;this file doesnt have the same frame size!, remaming file&quot;</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">snippetfilename</span><span class="p">,</span> <span class="n">snippetfilename</span><span class="o">+</span><span class="s">&quot;.bak&quot;</span><span class="p">)</span>
+        <span class="n">snippet</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="c">#handle.close()</span>
+
+
+<span class="n">chop_new_audio</span><span class="p">(</span><span class="s">&quot;babycryingformilk.wav&quot;</span><span class="p">,</span> <span class="s">&quot;babycryingformilk&quot;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Step-3:--Transform-the-chopped-snippets-into-MFCC-fingerprints-and-make-a-prediction">Step 3:  Transform the chopped snippets into MFCC fingerprints and make a prediction<a class="anchor-link" href="#Step-3:--Transform-the-chopped-snippets-into-MFCC-fingerprints-and-make-a-prediction">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">predictions</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">filename</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s">&#39;babycryingformilk/&#39;</span><span class="p">)):</span>
+    <span class="n">last_number_frames</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&quot;.wav&quot;</span><span class="p">):</span>
+        <span class="c">#print filename</span>
+        <span class="n">audiofile</span><span class="p">,</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&quot;babycryingformilk/&quot;</span><span class="o">+</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">fingerprint</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">mfcc</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">audiofile</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">,</span> <span class="n">n_mfcc</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">fingerprint</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="s">&#39;float32&#39;</span><span class="p">)</span>
+        <span class="n">prediction</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">fingerprint</span><span class="p">)</span>
+        <span class="c">#print prediction</span>
+        <span class="n">predictions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prediction</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Step-4:-Take-the-mode-of-the-predictions-to-come-up-with-a-final-predition">Step 4: Take the mode of the predictions to come up with a final predition<a class="anchor-link" href="#Step-4:-Take-the-mode-of-the-predictions-to-come-up-with-a-final-predition">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">data</span><span class="o">.</span><span class="n">most_common</span><span class="p">()</span>   <span class="c"># Returns all unique items and their counts</span>
+<span class="k">print</span> <span class="n">data</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[(&apos;hungry&apos;, 29)]
+[(&apos;hungry&apos;, 29)]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>So our algorithm worked! (But maybe we just got lucky)  I think when you build a bigger dataset and test with more sound files you will be able to see how well the algorithm really performs.  There are also many ways to adjust the algorithm parameters and test how that affects the accuracy of predictions.  I hope this is useful for getting started!  Let me know if you have any other questions or concerns and I will be more than happy to help!</p>
 
 </div>
 </div>
