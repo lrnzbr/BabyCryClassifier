@@ -1,6 +1,5 @@
-
 # Baby Cry Analysis & Testing
-
+An instructional writeup for a group of students in Gaza creating an application that classifies different types of baby cries.
 ## Part 1: Let's train a machine learning algorithm and test it's performance
 
 We will begin by collecting all of the sample audio files we have, chopping them into smaller audio snippets and training a collection of machine learning algorithms with part of this data.  With another part of the data we will test and see how well the algorithms predict data they have never seen before and then choose the best algorithm for our project
